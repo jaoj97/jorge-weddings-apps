@@ -2,117 +2,174 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Showcase — Todos los Layouts</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Post Templates · Jorge Weddings</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #1a1a1a; font-family: 'Helvetica Neue', sans-serif; color: #fff; padding: 40px 40px 80px; }
-  h1 { font-size: 22px; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
-  .subtitle { font-size: 12px; color: #888; margin-bottom: 50px; }
+  body { background: #1a1a1a; font-family: 'Helvetica Neue', sans-serif; color: #fff; padding: 50px 40px 90px; }
+  h1 { font-size: 26px; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+  .subtitle { font-size: 12px; color: #888; margin-bottom: 40px; letter-spacing: 1px; }
 
+  /* Tabs */
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid #333; margin-bottom: 50px; }
+  .tab { padding: 14px 28px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: #888; cursor: pointer; border-bottom: 2px solid transparent; transition: all .2s; background: none; border-left: none; border-right: none; border-top: none; font-family: inherit; }
+  .tab:hover { color: #ddd; }
+  .tab.active { color: #fff; border-bottom-color: #c4a576; }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* Sections within panels */
   .section { margin-bottom: 60px; }
-  .section h2 {
-    font-size: 13px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
-    color: #ccc; margin-bottom: 6px;
-  }
+  .section h2 { font-size: 13px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #ccc; margin-bottom: 6px; }
   .section .desc { font-size: 11px; color: #666; margin-bottom: 20px; }
 
+  /* Cards */
   .grid { display: flex; gap: 28px; flex-wrap: wrap; }
   .card { display: flex; flex-direction: column; align-items: center; }
-  .card .label {
-    font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #aaa;
-    margin-bottom: 8px; text-align: center; font-weight: 600;
-  }
+  .card .label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #aaa; margin-bottom: 8px; text-align: center; font-weight: 600; }
   .card .info { font-size: 10px; color: #555; margin-top: 8px; text-align: center; line-height: 1.5; }
   .card img { width: 220px; border-radius: 12px; box-shadow: 0 6px 24px rgba(0,0,0,0.4); }
+
+  /* Carousels grid (más cards, mismo tamaño) */
+  .carousel-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 36px; }
+  .carousel-grid .card { width: 100%; }
+  .carousel-grid .card img { width: 100%; max-width: 260px; }
+  .carousel-grid .title { font-size: 12px; color: #ddd; margin-top: 12px; text-align: center; font-weight: 500; letter-spacing: .5px; }
+  .carousel-grid .desc-c { font-size: 10px; color: #666; margin-top: 4px; text-align: center; line-height: 1.4; max-width: 240px; }
+  .carousel-grid .photos { font-size: 10px; color: #c4a576; margin-top: 6px; letter-spacing: .5px; font-weight: 600; }
 </style>
 </head>
 <body>
 
-<h1>Template Showcase — Todos los Layouts</h1>
-<p class="subtitle">Matriz completa &middot; Vertical / Horizontal / Mixto &middot; 1, 2 y 3 fotos</p>
+<h1>Post Templates · Jorge Weddings</h1>
+<p class="subtitle">Identidad visual unificada &middot; Cream linen &middot; Premium / Editorial</p>
 
-<!-- 1 PHOTO VERT -->
+<div class="tabs">
+  <button class="tab active" data-tab="historias">Historias</button>
+  <button class="tab" data-tab="carruseles">Cómo se ven los carruseles</button>
+</div>
+
+<!-- ============ TAB 1: HISTORIAS ============ -->
+<div class="panel active" id="historias">
+
 <div class="section">
   <h2>1 Foto &middot; Vertical</h2>
   <p class="desc">Para hero shots, retratos, reveals.</p>
   <div class="grid">
-    <div class="card"><div class="label">S1</div><img src="tpl_S1.jpg"><div class="info">72% width<br>Centrada</div></div>
-    <div class="card"><div class="label">S3</div><img src="tpl_S3.jpg"><div class="info">84% width<br>Mas grande</div></div>
+    <div class="card"><div class="label">S1</div><img src="stories/tpl_S1.jpg"><div class="info">72% width<br>Centrada</div></div>
+    <div class="card"><div class="label">S3</div><img src="stories/tpl_S3.jpg"><div class="info">84% width<br>Más grande</div></div>
   </div>
 </div>
 
-<!-- 1 PHOTO HORIZ -->
 <div class="section">
   <h2>1 Foto &middot; Horizontal</h2>
   <p class="desc">Para fotos horizontales con impacto. Centradas con respiro arriba/abajo.</p>
   <div class="grid">
-    <div class="card"><div class="label">SH1</div><img src="tpl_SH1.jpg"><div class="info">88% width<br>Equilibrada</div></div>
-    <div class="card"><div class="label">SH2</div><img src="tpl_SH2.jpg"><div class="info">98% width<br>Maximo impacto</div></div>
+    <div class="card"><div class="label">SH1</div><img src="stories/tpl_SH1.jpg"><div class="info">88% width<br>Equilibrada</div></div>
+    <div class="card"><div class="label">SH2</div><img src="stories/tpl_SH2.jpg"><div class="info">98% width<br>Máximo impacto</div></div>
   </div>
 </div>
 
-<!-- 2 PHOTOS VERT -->
 <div class="section">
   <h2>2 Fotos &middot; Verticales</h2>
   <p class="desc">Ambas fotos nativas verticales.</p>
   <div class="grid">
-    <div class="card"><div class="label">D1</div><img src="tpl_D1.jpg"><div class="info">Diagonal offset<br>Top-left → Bottom-right</div></div>
-    <div class="card"><div class="label">D2</div><img src="tpl_D2.jpg"><div class="info">Diagonal invertida<br>Top-right → Bottom-left</div></div>
-    <div class="card"><div class="label">DS1</div><img src="tpl_DS1.jpg"><div class="info">Side-by-side limpio<br>Grid simetrico centrado</div></div>
+    <div class="card"><div class="label">D1</div><img src="stories/tpl_D1.jpg"><div class="info">Diagonal offset<br>Top-left → Bottom-right</div></div>
+    <div class="card"><div class="label">D2</div><img src="stories/tpl_D2.jpg"><div class="info">Diagonal invertida<br>Top-right → Bottom-left</div></div>
+    <div class="card"><div class="label">DS1</div><img src="stories/tpl_DS1.jpg"><div class="info">Side-by-side limpio<br>Grid simétrico centrado</div></div>
   </div>
 </div>
 
-<!-- 2 PHOTOS MIX -->
 <div class="section">
   <h2>2 Fotos &middot; Mixto (Vert + Horiz)</h2>
-  <p class="desc">1 vertical + 1 horizontal. Respetar orientacion nativa.</p>
+  <p class="desc">1 vertical + 1 horizontal. Respeta orientación nativa.</p>
   <div class="grid">
-    <div class="card"><div class="label">D7</div><img src="tpl_D7.jpg"><div class="info">Vert top-left<br>Horiz bottom-right</div></div>
-    <div class="card"><div class="label">D8</div><img src="tpl_D8.jpg"><div class="info">Horiz top-right<br>Vert bottom-left</div></div>
-    <div class="card"><div class="label">M1</div><img src="tpl_M1.jpg"><div class="info">Vert grande dominante<br>Horiz chica bottom-right</div></div>
+    <div class="card"><div class="label">D7</div><img src="stories/tpl_D7.jpg"><div class="info">Vert top-left<br>Horiz bottom-right</div></div>
+    <div class="card"><div class="label">D8</div><img src="stories/tpl_D8.jpg"><div class="info">Horiz top-right<br>Vert bottom-left</div></div>
+    <div class="card"><div class="label">M1</div><img src="stories/tpl_M1.jpg"><div class="info">Vert grande dominante<br>Horiz chica bottom-right</div></div>
   </div>
 </div>
 
-<!-- 2 PHOTOS HORIZ -->
 <div class="section">
   <h2>2 Fotos &middot; Horizontales</h2>
   <p class="desc">Ambas fotos nativas horizontales.</p>
   <div class="grid">
-    <div class="card"><div class="label">H1</div><img src="tpl_H1.jpg"><div class="info">Apiladas centradas<br>Mismo tamano, 92% width</div></div>
-    <div class="card"><div class="label">H4</div><img src="tpl_H4.jpg"><div class="info">Diagonal offset<br>Top-left → Bottom-right</div></div>
+    <div class="card"><div class="label">H1</div><img src="stories/tpl_H1.jpg"><div class="info">Apiladas centradas<br>Mismo tamaño, 92% width</div></div>
+    <div class="card"><div class="label">H4</div><img src="stories/tpl_H4.jpg"><div class="info">Diagonal offset<br>Top-left → Bottom-right</div></div>
   </div>
 </div>
 
-<!-- 3 PHOTOS VERT -->
 <div class="section">
   <h2>3 Fotos &middot; Verticales</h2>
   <p class="desc">Tres fotos verticales.</p>
   <div class="grid">
-    <div class="card"><div class="label">TV1</div><img src="tpl_TV1.jpg"><div class="info">3 vert en fila<br>Gallery centrada</div></div>
-    <div class="card"><div class="label">TV2</div><img src="tpl_TV2.jpg"><div class="info">1 hero top + 2 chicas bottom<br>Jerarquia clara</div></div>
+    <div class="card"><div class="label">TV1</div><img src="stories/tpl_TV1.jpg"><div class="info">3 vert en fila<br>Gallery centrada</div></div>
+    <div class="card"><div class="label">TV2</div><img src="stories/tpl_TV2.jpg"><div class="info">1 hero top + 2 chicas bottom<br>Jerarquía clara</div></div>
   </div>
 </div>
 
-<!-- 3 PHOTOS MIX -->
 <div class="section">
   <h2>3 Fotos &middot; Mixto</h2>
   <p class="desc">Combinaciones de vertical + horizontal.</p>
   <div class="grid">
-    <div class="card"><div class="label">M2</div><img src="tpl_M2.jpg"><div class="info">2 vert top + 1 horiz bottom</div></div>
-    <div class="card"><div class="label">M3</div><img src="tpl_M3.jpg"><div class="info">1 horiz top + 2 vert bottom</div></div>
-    <div class="card"><div class="label">VHH1</div><img src="tpl_VHH1.jpg"><div class="info">1 vert hero top<br>2 horiz apiladas bottom</div></div>
-    <div class="card"><div class="label">VHH2</div><img src="tpl_VHH2.jpg"><div class="info">Sandwich:<br>horiz - vert - horiz</div></div>
+    <div class="card"><div class="label">M2</div><img src="stories/tpl_M2.jpg"><div class="info">2 vert top + 1 horiz bottom</div></div>
+    <div class="card"><div class="label">M3</div><img src="stories/tpl_M3.jpg"><div class="info">1 horiz top + 2 vert bottom</div></div>
+    <div class="card"><div class="label">VHH1</div><img src="stories/tpl_VHH1.jpg"><div class="info">1 vert hero top<br>2 horiz apiladas bottom</div></div>
+    <div class="card"><div class="label">VHH2</div><img src="stories/tpl_VHH2.jpg"><div class="info">Sandwich:<br>horiz - vert - horiz</div></div>
   </div>
 </div>
 
-<!-- 3 PHOTOS HORIZ -->
 <div class="section">
   <h2>3 Fotos &middot; Horizontales</h2>
   <p class="desc">Tres fotos horizontales apiladas.</p>
   <div class="grid">
-    <div class="card"><div class="label">H3</div><img src="tpl_H3.jpg"><div class="info">3 horiz apiladas<br>90% width</div></div>
+    <div class="card"><div class="label">H3</div><img src="stories/tpl_H3.jpg"><div class="info">3 horiz apiladas<br>90% width</div></div>
   </div>
 </div>
+
+</div>
+<!-- ============ /TAB 1 ============ -->
+
+<!-- ============ TAB 2: CARRUSELES ============ -->
+<div class="panel" id="carruseles">
+<p style="font-size:12px;color:#888;margin-bottom:30px;letter-spacing:1px">20 layouts &middot; Instagram Carousel &middot; 1080×1350 &middot; 4:5</p>
+
+<div class="carousel-grid">
+  <div class="card"><div class="label">C01</div><img src="carruseles/tpl_C01.jpg"><div class="title">1 Vertical · Full Bleed</div><div class="desc-c">Vert cubre 100% del lienzo</div><div class="photos">1 vert</div></div>
+  <div class="card"><div class="label">C02</div><img src="carruseles/tpl_C02.jpg"><div class="title">1 Vertical · Editorial</div><div class="desc-c">Vert centrada con márgenes</div><div class="photos">1 vert</div></div>
+  <div class="card"><div class="label">C03</div><img src="carruseles/tpl_C03.jpg"><div class="title">1 Horizontal · Editorial</div><div class="desc-c">Horiz centrada con respiro</div><div class="photos">1 horiz</div></div>
+  <div class="card"><div class="label">C04</div><img src="carruseles/tpl_C04.jpg"><div class="title">2 Verticales · Split</div><div class="desc-c">Dos vert 50/50 full height</div><div class="photos">2 vert</div></div>
+  <div class="card"><div class="label">C05</div><img src="carruseles/tpl_C05.jpg"><div class="title">2 Horizontales · Apiladas</div><div class="desc-c">Dos horiz apiladas full width</div><div class="photos">2 horiz</div></div>
+  <div class="card"><div class="label">C06</div><img src="carruseles/tpl_C06.jpg"><div class="title">2 Verticales · Diagonal</div><div class="desc-c">Diagonal offset (TL → BR)</div><div class="photos">2 vert</div></div>
+  <div class="card"><div class="label">C07</div><img src="carruseles/tpl_C07.jpg"><div class="title">Vert Hero + Horiz Chica</div><div class="desc-c">Asimétrico, hero vertical</div><div class="photos">1 vert + 1 horiz</div></div>
+  <div class="card"><div class="label">C08</div><img src="carruseles/tpl_C08.jpg"><div class="title">2 Horizontales · Diagonal</div><div class="desc-c">Diagonal offset horizontal</div><div class="photos">2 horiz</div></div>
+  <div class="card"><div class="label">C09</div><img src="carruseles/tpl_C09.jpg"><div class="title">2 Horizontales · Grande+Chica</div><div class="desc-c">Top grande + bottom chica</div><div class="photos">2 horiz</div></div>
+  <div class="card"><div class="label">C10</div><img src="carruseles/tpl_C10.jpg"><div class="title">2 Verticales · Editorial</div><div class="desc-c">Par centrado con márgenes</div><div class="photos">2 vert</div></div>
+  <div class="card"><div class="label">C11</div><img src="carruseles/tpl_C11.jpg"><div class="title">Horiz Top + 2 Verticales</div><div class="desc-c">Apertura horiz, cierre vert duo</div><div class="photos">1 horiz + 2 vert</div></div>
+  <div class="card"><div class="label">C12</div><img src="carruseles/tpl_C12.jpg"><div class="title">2 Verticales + Horiz Bottom</div><div class="desc-c">Apertura vert duo, cierre horiz</div><div class="photos">2 vert + 1 horiz</div></div>
+  <div class="card"><div class="label">C13</div><img src="carruseles/tpl_C13.jpg"><div class="title">Sandwich H-H-H</div><div class="desc-c">Horiz chica · grande · chica</div><div class="photos">3 horiz</div></div>
+  <div class="card"><div class="label">C14</div><img src="carruseles/tpl_C14.jpg"><div class="title">Vert Hero + 2 Vert Stack</div><div class="desc-c">Hero izq + columna vert derecha</div><div class="photos">3 vert</div></div>
+  <div class="card"><div class="label">C15</div><img src="carruseles/tpl_C15.jpg"><div class="title">3 Horizontales · Apiladas</div><div class="desc-c">Secuencia editorial horizontal</div><div class="photos">3 horiz</div></div>
+  <div class="card"><div class="label">C16</div><img src="carruseles/tpl_C16.jpg"><div class="title">Grid 2x2 · Verticales</div><div class="desc-c">Cuatro vert en grid</div><div class="photos">4 vert</div></div>
+  <div class="card"><div class="label">C17</div><img src="carruseles/tpl_C17.jpg"><div class="title">4 Horizontales · Apiladas</div><div class="desc-c">Tira de 4 horizontales</div><div class="photos">4 horiz</div></div>
+  <div class="card"><div class="label">C18</div><img src="carruseles/tpl_C18.jpg"><div class="title">Horiz Hero + Trio Vert</div><div class="desc-c">Apertura horiz + trio vert</div><div class="photos">1 horiz + 3 vert</div></div>
+  <div class="card"><div class="label">C19</div><img src="carruseles/tpl_C19.jpg"><div class="title">Horiz Hero + Grid 2x2 Horiz</div><div class="desc-c">5 fotos horizontales</div><div class="photos">5 horiz</div></div>
+  <div class="card"><div class="label">C20</div><img src="carruseles/tpl_C20.jpg"><div class="title">Mosaico Vertical 2+3</div><div class="desc-c">Par + trio (todos vert)</div><div class="photos">5 vert</div></div>
+</div>
+
+</div>
+<!-- ============ /TAB 2 ============ -->
+
+<script>
+  document.querySelectorAll('.tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+      document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b === btn));
+      document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === target));
+    });
+  });
+</script>
 
 </body>
 </html>
