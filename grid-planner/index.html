@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grid Planner · Jorge Weddings</title>
+<link rel="stylesheet" href="styles.css?v=19">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</head>
+<body data-theme="light">
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">JW</div>
+      <div>
+        <div class="title">Grid Planner</div>
+        <div class="subtitle">Jorge Weddings · Instagram</div>
+      </div>
+    </div>
+
+    <div class="topbar-actions">
+      <div class="seg" id="viewToggle">
+        <button data-view="profile" class="active">Perfil</button>
+        <button data-view="grid">Solo grid</button>
+      </div>
+
+      <button class="btn ghost" id="btnTheme" title="Tema claro/oscuro">◐</button>
+      <button class="btn ghost" id="btnCalToggle" title="Mostrar/ocultar calendario">📅</button>
+
+      <div class="seg">
+        <button class="btn ghost" id="btnUndo" title="Deshacer (⌘Z)">↶</button>
+        <button class="btn ghost" id="btnRedo" title="Rehacer (⌘⇧Z)">↷</button>
+      </div>
+
+      <button class="btn" id="btnSync">⟳ Sincronizar</button>
+      <button class="btn primary" id="btnExport">Exportar ▾</button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="layout" id="mainLayout">
+    <!-- COL 1: CALENDAR (in-flow now, no longer fixed) -->
+    <aside class="calendar panel" id="calendar">
+      <div class="cal-head">
+        <h3>Calendario</h3>
+        <div class="row">
+          <button class="link" id="btnCadence">Cadencia ▾</button>
+          <button class="btn ghost xs" id="btnCalCollapse" title="Colapsar">«</button>
+        </div>
+      </div>
+      <div class="cadence-pop" id="cadencePop" hidden>
+        <div class="cad-row"><label>Días</label>
+          <div class="days">
+            <button data-d="1">L</button><button data-d="2">M</button><button data-d="3">X</button>
+            <button data-d="4">J</button><button data-d="5">V</button><button data-d="6">S</button><button data-d="0">D</button>
+          </div>
+        </div>
+        <div class="cad-row"><label>Hora</label><input type="time" id="cadTime" value="09:00"></div>
+        <div class="cad-row"><label>Inicio</label><input type="date" id="cadStart"></div>
+        <div class="cad-row"><button class="btn xs primary" id="cadApply">Aplicar a "planeado"</button></div>
+      </div>
+      <div class="cal-list" id="calList"></div>
+    </aside>
+    <div class="resizer" id="resizer1" data-target="cal" title="Arrastra para ajustar · doble click para colapsar"></div>
+
+    <!-- COL 2: GALLERY -->
+    <section class="panel gallery">
+      <div class="panel-head">
+        <h2>Galería externa</h2>
+        <div class="row">
+          <button class="btn xs" id="btnUpload">+ Subir fotos</button>
+          <input type="file" id="fileInput" multiple accept="image/*" hidden>
+        </div>
+      </div>
+
+      <div class="filters">
+        <div class="seg" id="sourceFilter">
+          <button data-src="all" class="active">Stock ★</button>
+          <button data-src="stock">Carrusel-OK</button>
+          <button data-src="carousels">Carruseles</button>
+          <button data-src="historias">Historias</button>
+          <button data-src="manual">Manual</button>
+        </div>
+        <div class="rating-filter" id="ratingFilter">
+          <div class="seg sm" id="ratingOp">
+            <button data-op=">=" class="active" title="Mayor o igual que">≥</button>
+            <button data-op="=" title="Igual a">=</button>
+            <button data-op="<=" title="Menor o igual que">≤</button>
+          </div>
+          <div class="seg sm" id="ratingValue">
+            <button data-r="0" title="0 ★">0</button>
+            <button data-r="1" title="1 ★">1</button>
+            <button data-r="2" title="2 ★">2</button>
+            <button data-r="3" title="3 ★">3</button>
+            <button data-r="4" class="active" title="4 ★">4</button>
+            <button data-r="5" title="5 ★">5</button>
+          </div>
+          <span class="star-icon">★</span>
+        </div>
+        <input type="search" id="searchBox" placeholder="Buscar boda, capítulo, tag…">
+        <div class="filter-row" id="filterChips"></div>
+      </div>
+
+      <div class="gallery-meta">
+        <span id="galleryCount">0 fotos</span>
+        <div class="seg sm" id="tileMode" title="Modo de visualización">
+          <button data-tm="square" class="active" title="Cuadrado 1:1">▢</button>
+          <button data-tm="vert" title="Vertical 4:5 (como IG)">▯</button>
+          <button data-tm="fit" title="Ajustar (sin recortar)">⤢</button>
+          <button data-tm="dynamic" title="Dinámico (proporción real)">⌗</button>
+        </div>
+        <label class="zoom small">
+          <input type="range" id="galZoom" min="60" max="200" step="10" value="95">
+        </label>
+        <button class="link" id="btnShuffleGallery">Mezclar</button>
+      </div>
+
+      <div class="gallery-grid" id="galleryEl"></div>
+    </section>
+    <div class="resizer" id="resizer2" data-target="gal" title="Arrastra para ajustar · doble click para colapsar"></div>
+
+    <!-- COL 3: GRID -->
+    <section class="panel grid-side">
+      <div class="grid-toolbar">
+        <div class="row">
+          <label class="zoom">
+            Zoom
+            <input type="range" id="zoomSlider" min="1" max="6" step="1" value="3">
+          </label>
+          <div class="seg" id="deviceMode" title="Vista de dispositivo">
+            <button data-dev="desktop" class="active" title="Desktop">🖥</button>
+            <button data-dev="iphone" title="iPhone (393px)">📱</button>
+            <button data-dev="iphone-mini" title="iPhone mini / SE (375px)">📱˙</button>
+          </div>
+          <label class="zoom phone-zoom" id="phoneZoomLabel" title="Zoom del teléfono">
+            🔍
+            <input type="range" id="phoneZoom" min="0.6" max="2.0" step="0.05" value="1">
+          </label>
+          <div class="seg" id="overlayToggle">
+            <button data-ov="none" class="active">Normal</button>
+            <button data-ov="palette">Paleta</button>
+            <button data-ov="lum">Luminosidad</button>
+          </div>
+          <div class="seg" id="modeToggle">
+            <button data-mode="reorder" class="active" title="Reordenar (push)">↹</button>
+            <button data-mode="swap" title="Intercambiar (swap)">⇄</button>
+          </div>
+        </div>
+        <div class="row">
+          <button class="btn xs" id="btnPreset">Patrones ▾</button>
+          <button class="btn xs" id="btnSnap">Snapshot</button>
+          <button class="btn xs" id="btnSplit">Split view</button>
+        </div>
+      </div>
+      <div class="balance" id="balanceBar"></div>
+
+      <div class="phone-frame" id="phoneFrame">
+      <div class="phone-screen" id="phoneScreen">
+      <div class="profile-header" id="profileHeader">
+        <div class="ph-status-bar">
+          <span class="ph-time">3:13</span>
+          <span class="ph-status-icons">📶 📡 <span class="battery">89%</span></span>
+        </div>
+        <div class="ph-top">
+          <button class="ph-back">‹</button>
+          <div class="ph-handle-top" id="phHandle" contenteditable="true">jorge_ortiz_foto</div>
+          <div class="ph-actions-top">
+            <span>🔔</span>
+            <span>⋯</span>
+          </div>
+        </div>
+
+        <div class="ph-pic-row">
+          <div class="ph-pic-ring">
+            <div class="ph-pic">JO</div>
+          </div>
+          <div class="ph-stats-vert">
+            <div class="ph-stat"><b id="phPosts">0</b><span>publicaciones</span></div>
+            <div class="ph-stat"><b id="phFollowers" contenteditable="true">19.6 mil</b><span>seguidores</span></div>
+            <div class="ph-stat"><b id="phFollowing" contenteditable="true">1,288</b><span>seguidos</span></div>
+          </div>
+        </div>
+
+        <div class="ph-category">Fotógrafo(a)</div>
+        <div class="ph-name" id="phName" contenteditable="true">Jorge Ortiz | Wedding photographer Antigua Guatemala <span class="muted">he/him</span></div>
+        <div class="ph-bio" id="phBio" contenteditable="true">Capturing love, happiness, spontaneity for those wildly in love 📸</div>
+        <div class="ph-translate">Ver traducción</div>
+        <div class="ph-link">🔗 <span id="phLink" contenteditable="true">jorgeweddings.com</span> y 2 más</div>
+
+        <div class="ph-followers-row">
+          <div class="ph-fol-avatars">
+            <div class="ph-fol-pic" style="background: linear-gradient(135deg,#f59e0b,#dc2626)"></div>
+            <div class="ph-fol-pic" style="background: linear-gradient(135deg,#a16207,#7c2d12)"></div>
+          </div>
+          <span><b>fisit.gt</b>, <b>_gabriepe</b> y <b>197 más</b> siguen esta cuenta</span>
+        </div>
+
+        <div class="ph-buttons">
+          <button class="ph-btn">Siguiendo ▾</button>
+          <button class="ph-btn">Mensaje</button>
+          <button class="ph-btn truncate">Correo electróni…</button>
+          <button class="ph-btn square">＋</button>
+        </div>
+
+        <div class="ph-highlights" id="phHighlights">
+          <!-- generado por JS desde state.profile.highlights -->
+        </div>
+
+        <div class="ph-tabs">
+          <div class="ph-tab active" title="Grid">▦</div>
+          <div class="ph-tab" title="Reels">▷</div>
+          <div class="ph-tab" title="Tagged">👤</div>
+        </div>
+      </div>
+
+      <div class="grid-wrap">
+        <div class="grid-col" id="gridColMain">
+          <div class="grid-section-label">↑ ya publicado</div>
+          <div class="ig-grid" id="gridPublished"></div>
+          <div class="grid-divider"><span>línea de hoy · próximas publicaciones ↓</span></div>
+          <div class="ig-grid" id="gridPlanned"></div>
+        </div>
+        <div class="grid-col" id="gridColB" hidden>
+          <div class="grid-section-label muted">Versión B</div>
+          <div class="ig-grid" id="gridB"></div>
+        </div>
+      </div>
+      </div><!-- /phone-screen -->
+      </div><!-- /phone-frame -->
+    </section>
+  </main>
+
+  <!-- INSPECTOR -->
+  <aside class="inspector" id="inspector" hidden>
+    <button class="close" id="inspectorClose">×</button>
+    <div class="ins-preview" id="insPreview"></div>
+    <div class="ins-body">
+      <div class="ins-row">
+        <label>Tipo</label>
+        <div class="seg" id="insType">
+          <button data-t="photo">Foto</button>
+          <button data-t="carousel">Carrusel</button>
+          <button data-t="reel">Reel</button>
+          <button data-t="story">Story</button>
+        </div>
+      </div>
+      <div class="ins-row">
+        <label>Fecha programada</label>
+        <input type="datetime-local" id="insDate">
+      </div>
+      <div class="ins-row">
+        <label>Boda / Capítulo</label>
+        <input type="text" id="insChapter" placeholder="Caro & Sergio · Capítulo 2">
+      </div>
+      <div class="ins-row">
+        <label>Caption <span class="char-count" id="capCount">0/2200</span></label>
+        <textarea id="insCaption" rows="6" placeholder="Caption del post…"></textarea>
+      </div>
+      <div class="ins-row">
+        <label>Hashtags</label>
+        <textarea id="insHashtags" rows="3" placeholder="#boda #cdmx …"></textarea>
+        <div class="hash-pool" id="hashPool"></div>
+      </div>
+      <div class="ins-row">
+        <label>Primer comentario</label>
+        <textarea id="insFirstComment" rows="2"></textarea>
+      </div>
+      <div class="ins-row">
+        <label>Ubicación</label>
+        <input type="text" id="insLocation">
+      </div>
+      <div class="ins-row">
+        <label>Alt text</label>
+        <input type="text" id="insAlt">
+      </div>
+      <div class="ins-row">
+        <label>Link en bio</label>
+        <input type="url" id="insLink">
+      </div>
+      <div class="ins-actions">
+        <button class="btn ghost" id="insRemove">Quitar del grid</button>
+        <button class="btn primary" id="insSave">Guardar</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- DROPDOWNS / MODALS -->
+  <div class="dropdown" id="exportMenu" hidden>
+    <button data-act="png">📸 Screenshot del grid (PNG)</button>
+    <button data-act="csv">📋 CSV (orden + captions + fechas)</button>
+    <button data-act="json">💾 JSON del proyecto</button>
+    <button data-act="html">🔗 HTML autocontenido (compartir)</button>
+    <button data-act="airtable">📤 Push a Airtable (Postear)</button>
+    <button data-act="print">🖨️ Imprimir</button>
+    <hr>
+    <button data-act="import">📁 Importar JSON…</button>
+  </div>
+
+  <div class="dropdown" id="presetMenu" hidden>
+    <button data-p="chess">▦ Tablero (alterna luz/oscuro)</button>
+    <button data-p="rows">═ Filas temáticas (3-3-3)</button>
+    <button data-p="diag">╲ Diagonales por color</button>
+    <button data-p="puzzle">⊞ Puzzle 3x3 por boda</button>
+    <button data-p="reverse">⇅ Invertir orden</button>
+    <button data-p="byrating">★ Ordenar por rating</button>
+    <button data-p="bydate">📅 Ordenar por fecha shoot</button>
+    <button data-p="balance">⚖️ Balancear pesos visuales</button>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast" hidden></div>
+
+  <!-- MODAL: SNAPSHOTS -->
+  <div class="modal" id="snapModal" hidden>
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>Snapshots</h3>
+        <button class="close" id="snapClose">×</button>
+      </div>
+      <div class="snap-form">
+        <input type="text" id="snapName" placeholder="Nombre (ej. Versión A)">
+        <button class="btn primary" id="snapSave">Guardar versión actual</button>
+      </div>
+      <div class="snap-list" id="snapList"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: CAROUSEL HOVER PREVIEW (popover) -->
+  <div class="hover-preview" id="hoverPreview" hidden></div>
+
+  <input type="file" id="importInput" accept="application/json" hidden>
+
+  <!-- HASH POOL DEFAULTS -->
+  <template id="hashPoolDefaults">
+    bodas-cdmx; bodas-mexico; novia-detalles; ceremonia-religiosa; recepcion-boda;
+    fotografo-bodas; momentos-boda; novios; vestido-novia; flores-boda; weddingphotographer;
+    realwedding; weddingday; weddinginspiration; bridestyle
+  </template>
+
+  <script src="app.js?v=22" defer></script>
+</body>
+</html>
